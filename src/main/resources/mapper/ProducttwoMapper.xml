@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jd.mapper.ProducttwoMapper">
+  <resultMap id="BaseResultMap" type="com.jd.pojo.Producttwo">
+    <id column="productTwoId" jdbcType="INTEGER" property="producttwoid" />
+    <result column="productTwoName" jdbcType="VARCHAR" property="producttwoname" />
+    <result column="productTwoDescription" jdbcType="VARCHAR" property="producttwodescription" />
+    <result column="productTwoUrl" jdbcType="VARCHAR" property="producttwourl" />
+    <result column="oneId" jdbcType="INTEGER" property="oneid" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    productTwoId, productTwoName, productTwoDescription, productTwoUrl, oneId
+  </sql>
+  <select id="selectByExample" parameterType="com.jd.pojo.ProducttwoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from ProductTwo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ProductTwo
+    where productTwoId = #{producttwoid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from ProductTwo
+    where productTwoId = #{producttwoid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jd.pojo.ProducttwoExample">
+    delete from ProductTwo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jd.pojo.Producttwo">
+    insert into ProductTwo (productTwoId, productTwoName, productTwoDescription, 
+      productTwoUrl, oneId)
+    values (#{producttwoid,jdbcType=INTEGER}, #{producttwoname,jdbcType=VARCHAR}, #{producttwodescription,jdbcType=VARCHAR}, 
+      #{producttwourl,jdbcType=VARCHAR}, #{oneid,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jd.pojo.Producttwo">
+    insert into ProductTwo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="producttwoid != null">
+        productTwoId,
+      </if>
+      <if test="producttwoname != null">
+        productTwoName,
+      </if>
+      <if test="producttwodescription != null">
+        productTwoDescription,
+      </if>
+      <if test="producttwourl != null">
+        productTwoUrl,
+      </if>
+      <if test="oneid != null">
+        oneId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="producttwoid != null">
+        #{producttwoid,jdbcType=INTEGER},
+      </if>
+      <if test="producttwoname != null">
+        #{producttwoname,jdbcType=VARCHAR},
+      </if>
+      <if test="producttwodescription != null">
+        #{producttwodescription,jdbcType=VARCHAR},
+      </if>
+      <if test="producttwourl != null">
+        #{producttwourl,jdbcType=VARCHAR},
+      </if>
+      <if test="oneid != null">
+        #{oneid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jd.pojo.ProducttwoExample" resultType="java.lang.Long">
+    select count(*) from ProductTwo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update ProductTwo
+    <set>
+      <if test="record.producttwoid != null">
+        productTwoId = #{record.producttwoid,jdbcType=INTEGER},
+      </if>
+      <if test="record.producttwoname != null">
+        productTwoName = #{record.producttwoname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.producttwodescription != null">
+        productTwoDescription = #{record.producttwodescription,jdbcType=VARCHAR},
+      </if>
+      <if test="record.producttwourl != null">
+        productTwoUrl = #{record.producttwourl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.oneid != null">
+        oneId = #{record.oneid,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update ProductTwo
+    set productTwoId = #{record.producttwoid,jdbcType=INTEGER},
+      productTwoName = #{record.producttwoname,jdbcType=VARCHAR},
+      productTwoDescription = #{record.producttwodescription,jdbcType=VARCHAR},
+      productTwoUrl = #{record.producttwourl,jdbcType=VARCHAR},
+      oneId = #{record.oneid,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jd.pojo.Producttwo">
+    update ProductTwo
+    <set>
+      <if test="producttwoname != null">
+        productTwoName = #{producttwoname,jdbcType=VARCHAR},
+      </if>
+      <if test="producttwodescription != null">
+        productTwoDescription = #{producttwodescription,jdbcType=VARCHAR},
+      </if>
+      <if test="producttwourl != null">
+        productTwoUrl = #{producttwourl,jdbcType=VARCHAR},
+      </if>
+      <if test="oneid != null">
+        oneId = #{oneid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where productTwoId = #{producttwoid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jd.pojo.Producttwo">
+    update ProductTwo
+    set productTwoName = #{producttwoname,jdbcType=VARCHAR},
+      productTwoDescription = #{producttwodescription,jdbcType=VARCHAR},
+      productTwoUrl = #{producttwourl,jdbcType=VARCHAR},
+      oneId = #{oneid,jdbcType=INTEGER}
+    where productTwoId = #{producttwoid,jdbcType=INTEGER}
+  </update>
+</mapper>

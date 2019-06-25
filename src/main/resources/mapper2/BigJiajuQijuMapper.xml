@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jd.mapper2.BigJiajuQijuMapper">
+
+  <resultMap id="getAllBigAndSmall" type="com.jd.VO.commonVO.commonVo">
+    <result column="b_sku" jdbcType="VARCHAR" property="b_sku"></result>
+    <!--<result column="b_sku" jdbcType="VARCHAR" property="sku"/>-->
+    <result column="b_title" jdbcType="VARCHAR" property="title"/>
+    <result column="title_alt" jdbcType="VARCHAR" property="titleAlt"/>
+    <result column="price" jdbcType="DECIMAL" property="price"/>
+    <result column="stock" jdbcType="VARCHAR" property="stock"/>
+    <result column="b_image_url" jdbcType="VARCHAR" property="imageUrl"/>
+    <result column="pid" jdbcType="VARCHAR" property="pid"/>
+    <result column="comment" jdbcType="VARCHAR" property="comment"/>
+    <result column="shop_message" jdbcType="VARCHAR" property="shopMessage"/>
+    <result column="icons" jdbcType="VARCHAR" property="icons"/>
+    <collection property="smallImageList" ofType="com.jd.pojo2.SmallJiajuQiju">
+      <result column="s_sku" jdbcType="VARCHAR" property="sku"/>
+      <result column="title" jdbcType="VARCHAR" property="title"/>
+      <result column="s_image_url" jdbcType="VARCHAR" property="imageUrl"/>
+      <result column="b_sku" jdbcType="VARCHAR" property="bSku"/>
+      <result column="stock" jdbcType="VARCHAR" property="stock"/>
+    </collection>
+  </resultMap>
+  <select id="selectCascadeByExample" parameterType="com.jd.pojo2.BigJiajuQijuExample" resultMap="getAllBigAndSmall">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    b.sku as b_sku,
+    b.title as b_title,
+    b.title_alt,
+    b.price,
+    b.stock,
+    b.image_url as b_image_url,
+    b.pid,
+    b.comment,
+    b.shop_message,
+    b.icons,
+    s.sku as s_sku,
+    s.title,
+    s.image_url as s_image_url,
+    s.b_sku,
+    s.stock
+    from
+    (
+    select * from big_jiaju_qiju limit ${leftLimit},${limitSize}
+    ) b
+    INNER JOIN small_jiaju_qiju s ON s.b_sku = b.sku
+
+  </select>
+
+  <resultMap id="BaseResultMap" type="com.jd.pojo2.BigJiajuQiju">
+    <result column="sku" jdbcType="VARCHAR" property="sku" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="title_alt" jdbcType="VARCHAR" property="titleAlt" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="stock" jdbcType="VARCHAR" property="stock" />
+    <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
+    <result column="pid" jdbcType="VARCHAR" property="pid" />
+    <result column="comment" jdbcType="VARCHAR" property="comment" />
+    <result column="shop_message" jdbcType="VARCHAR" property="shopMessage" />
+    <result column="icons" jdbcType="VARCHAR" property="icons" />
+    <result column="created" jdbcType="TIMESTAMP" property="created" />
+    <result column="updated" jdbcType="TIMESTAMP" property="updated" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    sku, title, title_alt, price, stock, image_url, pid, comment, shop_message, icons, 
+    created, updated
+  </sql>
+  <select id="selectByExample" parameterType="com.jd.pojo2.BigJiajuQijuExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from big_jiaju_qiju
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="leftLimit != null &amp;&amp; limitSize!= null">
+      limit ${leftLimit},${limitSize}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.jd.pojo2.BigJiajuQijuExample">
+    delete from big_jiaju_qiju
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jd.pojo2.BigJiajuQiju">
+    insert into big_jiaju_qiju (sku, title, title_alt, 
+      price, stock, image_url, 
+      pid, comment, shop_message, 
+      icons, created, updated
+      )
+    values (#{sku,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{titleAlt,jdbcType=VARCHAR}, 
+      #{price,jdbcType=DECIMAL}, #{stock,jdbcType=VARCHAR}, #{imageUrl,jdbcType=VARCHAR}, 
+      #{pid,jdbcType=VARCHAR}, #{comment,jdbcType=VARCHAR}, #{shopMessage,jdbcType=VARCHAR}, 
+      #{icons,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, #{updated,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.jd.pojo2.BigJiajuQiju">
+    insert into big_jiaju_qiju
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sku != null">
+        sku,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="titleAlt != null">
+        title_alt,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="stock != null">
+        stock,
+      </if>
+      <if test="imageUrl != null">
+        image_url,
+      </if>
+      <if test="pid != null">
+        pid,
+      </if>
+      <if test="comment != null">
+        comment,
+      </if>
+      <if test="shopMessage != null">
+        shop_message,
+      </if>
+      <if test="icons != null">
+        icons,
+      </if>
+      <if test="created != null">
+        created,
+      </if>
+      <if test="updated != null">
+        updated,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sku != null">
+        #{sku,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="titleAlt != null">
+        #{titleAlt,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="stock != null">
+        #{stock,jdbcType=VARCHAR},
+      </if>
+      <if test="imageUrl != null">
+        #{imageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null">
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null">
+        #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="shopMessage != null">
+        #{shopMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="icons != null">
+        #{icons,jdbcType=VARCHAR},
+      </if>
+      <if test="created != null">
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updated != null">
+        #{updated,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jd.pojo2.BigJiajuQijuExample" resultType="java.lang.Long">
+    select count(*) from big_jiaju_qiju
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update big_jiaju_qiju
+    <set>
+      <if test="record.sku != null">
+        sku = #{record.sku,jdbcType=VARCHAR},
+      </if>
+      <if test="record.title != null">
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.titleAlt != null">
+        title_alt = #{record.titleAlt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.price != null">
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.stock != null">
+        stock = #{record.stock,jdbcType=VARCHAR},
+      </if>
+      <if test="record.imageUrl != null">
+        image_url = #{record.imageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pid != null">
+        pid = #{record.pid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.comment != null">
+        comment = #{record.comment,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopMessage != null">
+        shop_message = #{record.shopMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.icons != null">
+        icons = #{record.icons,jdbcType=VARCHAR},
+      </if>
+      <if test="record.created != null">
+        created = #{record.created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updated != null">
+        updated = #{record.updated,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update big_jiaju_qiju
+    set sku = #{record.sku,jdbcType=VARCHAR},
+      title = #{record.title,jdbcType=VARCHAR},
+      title_alt = #{record.titleAlt,jdbcType=VARCHAR},
+      price = #{record.price,jdbcType=DECIMAL},
+      stock = #{record.stock,jdbcType=VARCHAR},
+      image_url = #{record.imageUrl,jdbcType=VARCHAR},
+      pid = #{record.pid,jdbcType=VARCHAR},
+      comment = #{record.comment,jdbcType=VARCHAR},
+      shop_message = #{record.shopMessage,jdbcType=VARCHAR},
+      icons = #{record.icons,jdbcType=VARCHAR},
+      created = #{record.created,jdbcType=TIMESTAMP},
+      updated = #{record.updated,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>
